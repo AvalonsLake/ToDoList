@@ -5,57 +5,46 @@ const saveTaskButton = document.getElementById("save-todo-btn");
 const listBox = document.getElementById("listBox");
 const saveInd = document.getElementById("saveIndex");
 
-// Challenge: Try and using your addTaskButton with a "keydown" eventlistener
-// and create a way to use the enter key to submit a new list item.
-
-addTaskButton.addEventListener("click", (e) => {
-  e.preventDefault(); // This prevents the page from reloading.
-  // start by setting a variable named todo to equal localstorage.getItem("todo")
-  // Add code below this line
-  // let todo = localStorage.getItem("todo");
-
-  // console.log(todo);
-
-  // if (todo === null) {
-  //   todoArray = [];
-  // } else {
-  //   todoArray = JSON.parse(todo);
-
-  //   if (text.value === "") {
-  //     alert("Please Add Something To The To-Do List");
-  //     return false;
-  //   }
-
-  //   todoArray.push(text.value);
-  //   text.value = "";
-  //   localStorage.setItem = todo;
-  //   JSON.stringify(todoArray);
-  //   displayTodo();
-  //   console.log(todoArray);
-  // }
-
-  let textv = document.getElementById("text").value;
-
-  todoArray.appendChild(textv);
-  console.log(todoArray);
-
-  // check if todo is null, if it is set todoArray = []
-  // else set todoArray to JSON.parse() your variable passed into the parse method.
-
-  // check if text.value is empty, alert that the input is empty and return
-
-  // now that you've parsed the value, push the text.value to the todoArray.
-  // set the text.value to an empty string.
-  // get the localstorage method and use the setItem and pass in todo
-  // and pass in JSON.stringify(todoArray).
-  // lastly call display todo method
-});
-
-// Add code below this comment to do the following:
-// 1. when the page loads, call displayTodo() method
 displayTodo();
 
-// This method is already in place for you.
+addTaskButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  addItem();
+});
+
+text.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addItem();
+    addTaskButton.style.display = "block";
+    saveTaskButton.style.display = "none";
+  }
+});
+
+function addItem() {
+  let todo = localStorage.getItem("todo");
+
+  if (todo === null) {
+    todoArray = [];
+  } else {
+    todoArray = JSON.parse(todo);
+  }
+
+  if (text.value === "") {
+    alert("Please Add Something To The To-Do List");
+    return false;
+  }
+
+  if (text.value === "") {
+    alert("Please Add Something To The To-Do List");
+    return false;
+  }
+
+  todoArray.push(text.value);
+  text.value = "";
+  localStorage.setItem("todo", JSON.stringify(todoArray));
+  displayTodo();
+}
+
 function displayTodo() {
   let todo = localStorage.getItem("todo");
   if (todo === null) {
@@ -75,31 +64,33 @@ function displayTodo() {
 }
 
 function deleteTodo(ind) {
-  // call the todo and let it equal localstorage.getitem("todo")
-  // assign the todoArray equal to JSON.parse(todo)
-  // use the todoArray and use the splice method on the ind and pass in 1 as well.
-  // set the todo in local storage and use the JSON.stringify(todoArray)
-  // call the display todo method
+  let todo = localStorage.getItem("todo");
+
+  todoArray = JSON.parse(todo);
+  todoArray.splice(ind, 1);
+  localStorage.setItem("todo", JSON.stringify(todoArray));
+  displayTodo();
 }
 
 function edit(ind) {
-  // set the saveInd.value equal to the ind
-  // call the todo and let it equal localstorage.getitem("todo")
-  // assign the todoArray equal to JSON.parse(todo)
-  // assign the text.value to the array and get the index [ind].
-  // set the addTaskButton display to none
-  // set the saveTaskButton display to block
+  saveInd.value = ind;
+  let todo = localStorage.getItem("todo");
+
+  todoArray = JSON.parse(todo);
+  text.value = todoArray[ind];
+  addTaskButton.style.display = "none";
+  saveTaskButton.style.display = "block";
 }
 
 saveTaskButton.addEventListener("click", () => {
-  // this is the challenge for this project
-  // in this part you will need to add the following:
-  // 1. call the todo and let it equal localstorage.getitem("todo")
-  // 2. assign the todoArray equal to JSON.parse(todo)
-  // then finish out the rest of the following instructions:
-  // 1. let id be the same as your saveInd.value
-  // 2. switch the add and save displays to block and none respectively.
-  // 3. set text value to empty
-  // 4. and use the localstorage method setItem, pass in todo and stringify the array.
-  // 5. display todo method called.
+  let todo = localStorage.getItem("todo");
+  todoArray = JSON.parse(todo);
+
+  let id = saveInd.value;
+  addTaskButton.style.display = "block";
+  saveTaskButton.style.display = "none";
+  todoArray[id] = text.value;
+  text.value = "";
+  localStorage.setItem("todo", JSON.stringify(todoArray));
+  displayTodo();
 });
